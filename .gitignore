@@ -1,0 +1,4 @@
+# Django stuff:
+*.log
+__pycache__
+.idea/
