@@ -20,4 +20,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # 成绩查询路由分发
     path('grades/', include('grades.urls')),
+    # 课表查询路由分发
+    path('timetable/', include('timetable.urls')),
 ]
