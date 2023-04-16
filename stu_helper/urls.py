@@ -23,5 +23,7 @@ urlpatterns = [
     # 课表查询路由分发
     path('timetable/', include('timetable.urls')),
     # 图书借阅情况路由
-    path('book/', include('book.urls'))
+    path('book/', include('book.urls')),
+    # 主页
+    path('main/', include('main.urls')),
 ]
