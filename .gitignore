@@ -1,3 +1,4 @@
 # Django stuff:
 *.log
 __pycache__
+!migrations/__init__.py
