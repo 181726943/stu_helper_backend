@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-3.4.1-dist/css/bootstrap.css' %}">
+</head>
+<body>
+<form method="post" action="{% url 'main:login' %}">
+    {% csrf_token %}
+    <input type="text" name="user" placeholder="用户名">
+    <input type="password" name="pwd" placeholder="密码">
+    <input type="submit" class="btn-primary" value="登录"/>
+    <span style="color: red">{{ error_msg }}</span>
+</form>
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-3.4.1-dist/js/bootstrap.js' %}"></script>
+</body>
+</html>

@@ -1,9 +1,62 @@
 from django.shortcuts import render, redirect
-from main.models import score, bookinfo
+from django.http import HttpResponse
+from main import models
+from django import forms
+# from main.models import score, bookinfo, timetable
+import datetime
 
 
-# Create your views here.
+class ScoreForm(forms.ModelForm):
+    class Meta:
+        model = models.score
+        fields = ["cname", "grade", "credit", "gpa"]
+
+
+class BookForm(forms.ModelForm):
+    class Meta:
+        model = models.bookinfo
+        fields = ["book_name", "read_type", "borrow_date", "return_date"]
+
+
+class ScheduleForm(forms.ModelForm):
+    class Meta:
+        model = models.timetable
+        fields = ["course_name", "addr", "c_period", "tech_name"]
+
+        # widgets = {
+        #     "course_name": forms.TextInput(attrs={"class": "form-control"})
+        #     "addr": forms.TextInput(attrs={"class": "form-control"})
+        # }
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+
+            for name, field in self.fields:
+                field.widgets.attrs = {"class": "form-control", "placeholder": field.labels}
+
 
 def home(request):
+    date = datetime.date.today().isoweekday()
+    today_schedule = models.timetable.objects.filter(c_week=date)
+    schedule = ScheduleForm()
+    return render(request, "home.html", {'schedule': schedule})
 
-    return render(request, "home.html")
+
+def personalinfo(request):
+    """编辑/查看个人信息"""
+    if request.method == "GET":
+        pass
+    return render(request, 'personalinfo.html')
+
+
+def login(request):
+    if request.method == 'GET':
+        print('method=get')
+        return render(request, 'login.html')
+    username = request.POST.get("user")
+    pwd = request.POST.get("pwd")
+    users = models.UserInfo.objects.get(user=username)
+    if username == 'lsz' and pwd == '123':
+        print(type(users))
+        return render(request, 'home.html')
+    return render(request, 'login.html', {"error_msg": "用户名或密码错误"})
+    print(type(users))

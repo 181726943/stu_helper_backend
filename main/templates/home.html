@@ -5,10 +5,23 @@
 <head>
     <meta charset="UTF-8">
     <title>主页</title>
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-3.4.1-dist/css/bootstrap.css' %}">
 </head>
 <body>
+<form method="post" novalidate>
+    {% csrf_token %}
+
+    <div class="form-group">
+        {% for sche in schedule %}
+            {{ sche.label }}
+            {{ sche }}
+            <span style="color: red;">{{ sche.errors.0 }}</span>
+        {% endfor %}
+    </div>
+</form>
+
 <form method="post">
-{#      写在form表单中，Django安全机制  #}
+<!--      写在form表单中，Django安全机制  -->
     {% csrf_token %}
 </form>
 
