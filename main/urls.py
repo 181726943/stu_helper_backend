@@ -7,6 +7,6 @@ urlpatterns = [
     path('home/', views.home, name='home'),
     # 个人中心
     path('personalinfo/', views.personalinfo, name='personalinfo'),
-    # 登录
-    path('login/', views.login, name='login'),
+    # 成绩查询
+    path('grades/', views.grades, name='grades'),
 ]

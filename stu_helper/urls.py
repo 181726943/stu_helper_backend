@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from main import views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     # 成绩查询路由分发
@@ -26,4 +28,6 @@ urlpatterns = [
     path('book/', include('book.urls')),
     # 主页
     path('main/', include('main.urls')),
+    # 登录
+    path('login/', views.login, name='login'),
 ]
