@@ -31,18 +31,16 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li><a href="#">学生课表查询</a></li>
-        <li><a href="#">考试成绩查询</a></li>
-        <li><a href="#">图书借阅情况</a></li>
+        <li><a href='/main/timetable/'>学生课表查询</a></li>
+        <li><a href='/main/grades/{{ schedule.stu_num }}'>考试成绩查询</a></li>
+        <li><a href='/main/bookinfo/'>图书借阅情况</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">登录</a></li>
+        <li><a href={% url 'login' %}>登录</a></li>
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">个人中心 <span class="caret"></span></a>
+          <a href={% url 'main:personalinfo' %} class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">个人中心 <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="#">用户中心</a></li>
-            <li><a href="#">账号信息</a></li>
-            <li><a href="#">退出</a></li>
+            <li><a href={% url 'main:personalinfo' %}>账号信息</a></li>
             <li role="separator" class="divider"></li>
             <li><a href="#">注销</a></li>
           </ul>

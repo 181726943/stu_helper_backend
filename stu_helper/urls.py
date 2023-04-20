@@ -20,14 +20,8 @@ from main import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # 成绩查询路由分发
-    path('grades/', include('grades.urls')),
-    # 课表查询路由分发
-    path('timetable/', include('timetable.urls')),
-    # 图书借阅情况路由
-    path('book/', include('book.urls')),
-    # 主页
-    path('main/', include('main.urls')),
     # 登录
     path('login/', views.login, name='login'),
+    # 主页
+    path('main/', include('main.urls')),
 ]

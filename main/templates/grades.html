@@ -4,39 +4,52 @@
 {% endblock %}
 
 {% block content %}
-    <form method="post" action="{% url 'main:grades' %}" class="form-inline">
-        {% csrf_token %}
-        <div class="form-group">
-            <select name="year_arr" id="ch_year" class="form-control selector-chosen" style="display: none;">
-                {% for year in year_now %}
-
-                {% endfor %}
-            </select>
+    <div>
+        <div class="container">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">成绩查询</h3>
+                </div>
+                <div class="panel-body">
+                    <form method="post" action="/main/grades/" class="form-inline">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            {{ choose_Y_T.year.label }}
+                            <select name="xn" id="ch_year" class="form-control">
+                                    <option value="0">全部</option>
+                                {% for every in year_now %}
+                                    <option value="{{ every.year }}">{{ every.year }}~{{ every.year|add:1 }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            {{ choose_Y_T.term.label }}
+                            {{ choose_Y_T.term }}
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="float: right">查 询</button>
+                    </form>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>课程</th>
+                            <th>成绩</th>
+                            <th>学分</th>
+                            <th>绩点</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for every_course in grade_list %}
+                            <tr>
+                                <td>{{ every_course.cname }}</td>
+                                <td>{{ every_course.grade }}</td>
+                                <td>{{ every_course.credit }}</td>
+                                <td>{{ every_course.gpa }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            {{ choose_Y_T.term.label}}
-            {{ choose_Y_T.term }}
-        </div>
-        <button type="submit" class="btn btn-primary" style="float: right">查询</button>
-    </form>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>课程</th>
-          <th>成绩</th>
-          <th>学分</th>
-          <th>绩点</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for every_course in grade_list %}
-        <tr>
-            <td>{{ every_course.cname }}</td>
-            <td>{{ every_course.grade }}</td>
-            <td>{{ every_course.credit }}</td>
-            <td>{{every_course.gpa}}</td>
-        </tr>
-      {% endfor %}
-      </tbody>
-    </table>
+    </div>
 {% endblock %}

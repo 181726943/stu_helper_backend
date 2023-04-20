@@ -33,10 +33,9 @@ class score(models.Model):
         (0, "全部"),
         (1, "第一学期"),
         (2, "第二学期"),
-        (3, "第三学期"),
     )
     stu_num = models.ForeignKey(related_name="学号", to="UserInfo", on_delete=models.CASCADE)
-    year = models.CharField("学年", max_length=10, default=2019)
+    year = models.IntegerField("学年", default=2019)
     term = models.SmallIntegerField("学期", choices=term_choice, default=1)
     cname = models.CharField("课程名称", max_length=100, default='')
     grade = models.DecimalField("成绩", max_digits=4, decimal_places=2, default=0.0)
