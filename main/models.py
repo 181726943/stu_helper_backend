@@ -30,7 +30,6 @@ class UserInfo(models.Model):
 
 class score(models.Model):
     term_choice = (
-        (0, "全部"),
         (1, "第一学期"),
         (2, "第二学期"),
     )

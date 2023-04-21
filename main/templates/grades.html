@@ -11,12 +11,11 @@
                     <h3 class="panel-title">成绩查询</h3>
                 </div>
                 <div class="panel-body">
-                    <form method="post" action="/main/grades/" class="form-inline">
-                        {% csrf_token %}
+                    <form method="get" class="form-inline">
                         <div class="form-group">
                             {{ choose_Y_T.year.label }}
-                            <select name="xn" id="ch_year" class="form-control">
-                                    <option value="0">全部</option>
+                            <select name="year" class="form-control chosen-select">
+                                <option value>全部</option>
                                 {% for every in year_now %}
                                     <option value="{{ every.year }}">{{ every.year }}~{{ every.year|add:1 }}</option>
                                 {% endfor %}
@@ -32,6 +31,7 @@
                         <thead>
                         <tr>
                             <th>课程</th>
+                            <th>学期</th>
                             <th>成绩</th>
                             <th>学分</th>
                             <th>绩点</th>
@@ -41,6 +41,7 @@
                         {% for every_course in grade_list %}
                             <tr>
                                 <td>{{ every_course.cname }}</td>
+                                <td>{{ every_course.term }}</td>
                                 <td>{{ every_course.grade }}</td>
                                 <td>{{ every_course.credit }}</td>
                                 <td>{{ every_course.gpa }}</td>
@@ -50,6 +51,17 @@
                     </table>
                 </div>
             </div>
+            <ul class="pagination">
+                {{ grade_page }}
+                <li>
+                <form style="float: left;margin-left: -1px" method="get">
+                    <input name="page"
+                           style="position: relative;float:left;display: inline-block;width: 80px;border-radius: 0;"
+                           type="text" class="form-control" placeholder="页码" value={{ current_page }}>
+                        <button style="border-radius: 0" class="btn btn-default" type="submit">跳转</button>
+                </form>
+            </li>
+            </ul>
         </div>
     </div>
 {% endblock %}

@@ -27,7 +27,8 @@ class ScoreForm(forms.ModelForm):
             super().__init__(*args, **kwargs)
 
             for name, field in self.fields.item():
-                field.widgets.attrs = {"placeholder": field.labels}
+                field.widgets.attrs = {"placeholder": field,
+                                       }
 
 
 class BookForm(forms.ModelForm):
@@ -65,7 +66,7 @@ def login(request):
         login_model = UserForm()
         return render(request, 'login.html', {"login_model": login_model})
     s_num = request.POST.get("stu_num")
-    pwd = request.POST.get("pwd")
+    pwd = request.POST.get("password")
     users = models.UserInfo.objects.get(user=s_num)
     if pwd == users.password:
         return redirect('/main/home/')
@@ -74,24 +75,41 @@ def login(request):
 
 def grades(request):
     # 补充成绩查询功能
-    date_now = datetime.date.today().year  # 当前年份
 
     data_dict = {}
     # 学年
-    xn = request.GET.get('xn')
+    xn = request.GET.get('year', '')
     # 学期
-    xq = request.GET.get('term')
-    if xn and xq:
+    xq = request.GET.get('term', '')
+    if xn:
         data_dict['year'] = xn
+    if xq:
         data_dict['term'] = xq
+    """
+    分页
+    """
+    from main.utils.page_init import Page_init
+
     grade_list = models.score.objects.filter(**data_dict)
-    print(grade_list)
-    print(xq)
-    print(data_dict)
+
+    page_object = Page_init(request, grade_list)
+    page_grade_list = page_object.page_queryset
+    grade_page = page_object.html()
+
+    # 选择学年和学期
     choose_Y_T = ScoreForm()
-    year_now = models.score.objects.values('year').distinct()
-    return render(request, 'grades.html',
-                  {"grade_list": grade_list, "choose_Y_T": choose_Y_T, "year_now": year_now})
+    # 根据数据库中学年设置学年选择列表
+    year_select = models.score.objects.values('year').distinct()
+
+    context = {"grade_list": page_grade_list,  # 分页数据
+               "choose_Y_T": choose_Y_T,  # 学年学期生成器
+               "year_now": year_select,  # 学年选择表
+               "date_dict": data_dict,  # 包含学年学期的字典
+               "grade_page": grade_page,  # 页码
+               "current_page": page_object.current_page  # 当前页
+               }
+
+    return render(request, 'grades.html', context)
 
 
 def timetable(request):
