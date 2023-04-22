@@ -49,10 +49,7 @@ class Page_init(object):
 
         # 首页
         self.query_dict.setlist(self.page_param, [1])
-        if self.current_page == 1:
-            first_page = '<li style="display: none><a href="?{}">首页</a></li>'.format(self.query_dict.urlencode())
-        else:
-            first_page = '<li><a href="?{}">首页</a></li>'.format(self.query_dict.urlencode())
+        first_page = '<li><a href="?{}">首页</a></li>'.format(self.query_dict.urlencode())
         page_list.append(first_page)
 
         # 上一页

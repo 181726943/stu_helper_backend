@@ -37,9 +37,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'grades',
-    'timetable',
-    'book',
     'main',
 ]
 
@@ -51,6 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'main.middleware.auth.AuthMiddleWare',
 ]
 
 ROOT_URLCONF = 'stu_helper.urls'
@@ -95,6 +93,7 @@ DATABASES = {
         "PORT": "3306",
     }
 }
+DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 
 
 # Password validation

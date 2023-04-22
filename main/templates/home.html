@@ -9,7 +9,7 @@
     {% endblock %}
     <link rel="stylesheet" href="{% static 'plugins/bootstrap-3.4.1-dist/css/bootstrap.css' %}">
     <style>
-        .navbar{
+        .navbar {
             border-radius: 0;
         }
     </style>
@@ -17,41 +17,45 @@
 </head>
 <body>
 <nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">西大学生助手</a>
-    </div>
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">西大学生助手</a>
+        </div>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li><a href='/main/timetable/'>学生课表查询</a></li>
-        <li><a href='/main/grades/{{ schedule.stu_num }}'>考试成绩查询</a></li>
-        <li><a href='/main/bookinfo/'>图书借阅情况</a></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href={% url 'login' %}>登录</a></li>
-        <li class="dropdown">
-          <a href={% url 'main:personalinfo' %} class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">个人中心 <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href={% url 'main:personalinfo' %}>账号信息</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">注销</a></li>
-          </ul>
-        </li>
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href='/main/timetable/'>学生课表查询</a></li>
+                <li><a href='/main/grades/'>考试成绩查询</a></li>
+                <li><a href='#'>考试信息查询</a></li>
+                <li><a href='/main/bookinfo/'>图书借阅情况</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href='/main/personalinfo/' class="dropdown-toggle" data-toggle="dropdown" role="button"
+                       aria-haspopup="true" aria-expanded="false">{{ request.session.info.name }}<span
+                            class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">个人中心</a></li>
+                        <li><a href="#">账号信息</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/logout/">注销</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
 </nav>
 
-<div >
+<div>
     {% block content %}{% endblock %}
 </div>
 <script src="{% static 'js/jquery.min.js' %}"></script>

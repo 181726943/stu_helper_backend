@@ -16,12 +16,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from main import views
+from main.views import login
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
     # 登录
-    path('login/', views.login, name='login'),
+    path('login/', login.login),
+    # 注销
+    path('logout/', login.logout),
+    # 图形验证码啊
+    path('image/auth_code/', login.image_code),
+
     # 主页
     path('main/', include('main.urls')),
 ]

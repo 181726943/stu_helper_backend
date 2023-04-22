@@ -23,7 +23,12 @@
                         </div>
                         <div class="form-group">
                             {{ choose_Y_T.term.label }}
-                            {{ choose_Y_T.term }}
+                            <select name="term" class="form-control chosen-select">
+                                <option value>全部</option>
+                                {% for every in term_select %}
+                                    <option value="{{ every.term }}">{{ every.term }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                         <button type="submit" class="btn btn-primary" style="float: right">查 询</button>
                     </form>

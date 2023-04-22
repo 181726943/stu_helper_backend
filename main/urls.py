@@ -1,16 +1,17 @@
 from django.urls import path
 from . import views
+from .views import home, personalinfo, grades, timetable, bookinfo
 
 app_name = 'main'
 urlpatterns = [
     # 首页
-    path('home/', views.home, name='home'),
+    path('home/', home.home, name='home'),
     # 个人中心
-    path('personalinfo/', views.personalinfo, name='personalinfo'),
+    path('personalinfo/', personalinfo.personalinfo, name='personalinfo'),
     # 成绩查询
-    path('grades/', views.grades, name='grades'),
+    path('grades/', grades.grades, name='grades'),
     # 课表查询
-    path('timetable/', views.timetable, name='timetable'),
+    path('timetable/', timetable.timetable, name='timetable'),
     # 图书借阅情况
-    path('bookinfo/', views.bookinfo, name='bookinfo'),
+    path('bookinfo/', bookinfo.bookinfo, name='bookinfo'),
 ]

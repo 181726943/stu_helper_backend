@@ -24,8 +24,8 @@ class UserInfo(models.Model):
         db_table = "personal"
 
     # 展示学号
-    # def __str__(self):
-    #     return self.stu_num
+    def __str__(self):
+        return self.stu_num
 
 
 class score(models.Model):
@@ -42,6 +42,7 @@ class score(models.Model):
     gpa = models.DecimalField("绩点", max_digits=2, decimal_places=1, default=0.0)
 
     class Meta:
+        verbose_name = "成绩"
         db_table = "score"
 
 
@@ -50,23 +51,61 @@ class bookinfo(models.Model):
         ("已读", "已读"),
         ("在读", "在读"),
     )
-    stu_num = models.ForeignKey(related_name="图书_学号", to="UserInfo", on_delete=models.CASCADE)
+    stu_num = models.ForeignKey(related_name="读者编号", to="UserInfo", on_delete=models.CASCADE)
     book_name = models.CharField("图书名称", max_length=100, default='')
     read_type = models.CharField("阅读情况", max_length=10, choices=book_choice, default='')
     borrow_date = models.DateField("借阅时间", blank=False)
     return_date = models.DateField("归还时间", blank=True)
 
     class Meta:
+        verbose_name = "图书借阅信息"
         db_table = "bookinfo"
+
+    def __str__(self):
+        return f"{self.book_name}-{str(self.borrow_date)}-{str(self.return_date)}"
+
+
+class ClassRoom(models.Model):
+    id = models.BigAutoField(primary_key=True, null=False)
+    building_name = models.CharField(max_length=50, verbose_name="教学楼编号")
+    room_num = models.PositiveIntegerField("教室编号")
+
+    class Meta:
+        db_table = "classroom"
+        verbose_name = "教室"
+
+    def __str__(self):
+        return f"{self.building_name}-{self.room_num}"
 
 
 class timetable(models.Model):
     stu_num = models.ForeignKey(related_name="课表_学号", to="UserInfo", on_delete=models.CASCADE)
     course_name = models.CharField("课程名称", max_length=50, default='')
-    addr = models.CharField("上课地点", max_length=20, default='')
-    c_week = models.SmallIntegerField("上课时间(周次)")
-    c_period = models.CharField("课节", max_length=10, default='')
+    addr = models.ForeignKey(related_name="上课地点", to="ClassRoom", max_length=20, on_delete=models.CASCADE)
+    start_week = models.SmallIntegerField("课程开始周", default=1)
+    end_week = models.SmallIntegerField("课程结束周", default=18)
+    start_class = models.SmallIntegerField("开始节数", default=1)
+    end_class = models.SmallIntegerField("结束节数", default=14)
     tech_name = models.CharField("教师姓名", max_length=50, default='')
 
     class Meta:
+        verbose_name = "课程表"
         db_table = "timetable"
+
+    def __str__(self):
+        return f"{self.course_name}-{self.start_week}-{self.end_week}"
+
+
+class ExamInfo(models.Model):
+    id = models.BigAutoField(primary_key=True, null=False)
+    name = models.CharField(max_length=50, verbose_name="考试课程")
+    exam_addr = models.ForeignKey(related_name="考试地点", to="ClassRoom", on_delete=models.CASCADE)
+    begin_time = models.DateTimeField(verbose_name="考试开始时间")
+    end_time = models.DateTimeField(verbose_name="考试结束时间")
+
+    class Meta:
+        db_table = "ExamInfo"
+        verbose_name = "考试"
+
+    def __str__(self):
+        return f"{self.name}-{str(self.exam_addr)}"
