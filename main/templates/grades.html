@@ -11,11 +11,11 @@
                     <h3 class="panel-title">成绩查询</h3>
                 </div>
                 <div class="panel-body">
-                    <form method="get" class="form-inline">
+                    <form id="chooseYT" class="form-inline">
                         <div class="form-group">
                             {{ choose_Y_T.year.label }}
-                            <select name="year" class="form-control chosen-select">
-                                <option value>全部</option>
+                            <select name="year" id="year_select" class="form-control">
+                                    <option value>全部</option>
                                 {% for every in year_now %}
                                     <option value="{{ every.year }}">{{ every.year }}~{{ every.year|add:1 }}</option>
                                 {% endfor %}
@@ -23,14 +23,14 @@
                         </div>
                         <div class="form-group">
                             {{ choose_Y_T.term.label }}
-                            <select name="term" class="form-control chosen-select">
-                                <option value>全部</option>
+                            <select name="term" id="term_select" class="form-control">
+                                    <option value>全部</option>
                                 {% for every in term_select %}
                                     <option value="{{ every.term }}">{{ every.term }}</option>
                                 {% endfor %}
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-primary" style="float: right">查 询</button>
+                        <button id="grade_search" type="submit" class="btn btn-primary" style="float: right">查 询</button>
                     </form>
                     <table class="table">
                         <thead>
@@ -47,6 +47,8 @@
                             <tr>
                                 <td>{{ every_course.cname }}</td>
                                 <td>{{ every_course.term }}</td>
+                                <!--<td>{{ every_course.get_term_display }}</td>-->
+                                <<!--这种方式显示中文 即数据库中对应注释字段-->
                                 <td>{{ every_course.grade }}</td>
                                 <td>{{ every_course.credit }}</td>
                                 <td>{{ every_course.gpa }}</td>
@@ -69,4 +71,29 @@
             </ul>
         </div>
     </div>
+{% endblock %}
+{% block js %}
+    <script type="text/javascript">
+        $(function () {
+
+        })
+
+        function year_term_searchEvent() {
+            $("#grade_search").click(function () {
+                $.ajax({
+                    url: '/main/grades/',
+                    type: "get",
+                    data:{
+                        year_select: $("#year_select").val(),
+                        term_select: $("#term_select").val(),
+                    },
+                    dataType: "JSON",
+                    success: function (res) {
+                        console.log(res);
+                        console.log(res.data);
+                    }
+                })
+            })
+        }
+    </script>
 {% endblock %}

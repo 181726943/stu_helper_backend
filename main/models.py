@@ -79,11 +79,21 @@ class ClassRoom(models.Model):
 
 
 class timetable(models.Model):
+    class WeekChoice(models.IntegerChoices):
+        Monday = 1, "星期一"
+        Tuesday = 2, "星期二"
+        Wednesday = 3, "星期三"
+        Thursday = 4, "星期四"
+        Friday = 5, "星期五"
+        Saturday = 6, "星期六"
+        Sunday = 7, "星期天"
+
     stu_num = models.ForeignKey(related_name="课表_学号", to="UserInfo", on_delete=models.CASCADE)
     course_name = models.CharField("课程名称", max_length=50, default='')
     addr = models.ForeignKey(related_name="上课地点", to="ClassRoom", max_length=20, on_delete=models.CASCADE)
     start_week = models.SmallIntegerField("课程开始周", default=1)
     end_week = models.SmallIntegerField("课程结束周", default=18)
+    weekday = models.IntegerField("上课日", choices=WeekChoice.choices, blank=True)
     start_class = models.SmallIntegerField("开始节数", default=1)
     end_class = models.SmallIntegerField("结束节数", default=14)
     tech_name = models.CharField("教师姓名", max_length=50, default='')

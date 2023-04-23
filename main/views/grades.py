@@ -1,18 +1,31 @@
-from django.shortcuts import render
+import json
+
+from django.shortcuts import render, HttpResponse
+from django.core import serializers
 
 from main.utils.form import ScoreForm
-
 from main import models
+from main.utils.page_init import Page_init
 
 
 def grades(request):
-    # 补充成绩查询功能
 
+    # 查询字典
     data_dict = {}
+
+    # 获取用户id
+    stu_num = request.session['info']['stu_num']
+
+    # 将用户id加入查询字典
+    data_dict['stu_num'] = stu_num
+
+    yt_choice = request.GET
+    # print(type(yt_choice))
+    # print(yt_choice)
     # 学年
-    xn = request.GET.get('year', '')
+    xn = yt_choice.get('year', '')
     # 学期
-    xq = request.GET.get('term', '')
+    xq = yt_choice.get('term', '')
     if xn:
         data_dict['year'] = int(xn)
     if xq:
@@ -20,9 +33,17 @@ def grades(request):
     """
     分页
     """
-    from main.utils.page_init import Page_init
 
+    # 这种方式获取到对象
     grade_list = models.score.objects.filter(**data_dict)
+    # # 获取到字典
+    # grade_dict = models.score.objects.filter(**data_dict).values('cname', 'grade', 'gpa', 'credit')
+    # # 对象列表[obj, obj, obj]
+    # grade_obj_list = models.score.objects.all()
+    # # 字典列表 [{'id':1, 'xxx': "xx"}, {'id':1, 'xxx': "xx"}]
+    # grade_dict_list = models.score.objects.all().values('cname', 'grade', 'gpa', 'credit')
+    # # 元组列表 [('id', 1), ('xxx', "xx"),]
+    # grade_tuple_list = models.score.objects.all().values_list('cname', 'grade', 'gpa', 'credit')
 
     page_object = Page_init(request, grade_list)
     page_grade_list = page_object.page_queryset
@@ -43,4 +64,6 @@ def grades(request):
                "current_page": page_object.current_page  # 当前页
                }
 
+    # list_grade = serializers.serialize("json", grade_list)
+    # return HttpResponse(list_grade)
     return render(request, 'grades.html', context)
