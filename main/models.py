@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 
 
@@ -13,19 +15,20 @@ class UserInfo(models.Model):
         ("6", "6栋"),
     )
     stu_num = models.CharField("学号", max_length=15, primary_key=True)
-    user = models.CharField("姓名", max_length=50, blank=False)
     password = models.CharField("密码", max_length=20, blank=False, default='123456')
+    user = models.CharField("姓名", max_length=50, blank=False)
     grade = models.PositiveIntegerField("年级")
+    institute = models.CharField("学院", max_length=100, default='')
+    profession = models.CharField("专业", max_length=150, default='')
     dorm_build = models.CharField("宿舍楼", max_length=5, choices=dorm_choice, default='')
     dorm_num = models.PositiveIntegerField("宿舍号")
-    institute = models.CharField("学院", max_length=100, default='')
 
     class Meta:
         db_table = "personal"
 
     # 展示学号
     def __str__(self):
-        return self.stu_num
+        return self.user
 
 
 class score(models.Model):
@@ -96,7 +99,7 @@ class timetable(models.Model):
     weekday = models.IntegerField("上课日", choices=WeekChoice.choices, blank=True)
     start_class = models.SmallIntegerField("开始节数", default=1)
     end_class = models.SmallIntegerField("结束节数", default=14)
-    tech_name = models.CharField("教师姓名", max_length=50, default='')
+    teach_name = models.CharField("教师姓名", max_length=50, default='')
 
     class Meta:
         verbose_name = "课程表"
@@ -108,8 +111,9 @@ class timetable(models.Model):
 
 class ExamInfo(models.Model):
     id = models.BigAutoField(primary_key=True, null=False)
-    name = models.CharField(max_length=50, verbose_name="考试课程")
+    course_name = models.CharField(max_length=50, verbose_name="考试课程")
     exam_addr = models.ForeignKey(related_name="考试地点", to="ClassRoom", on_delete=models.CASCADE)
+    exam_date = models.DateField("考试日期", default=datetime.date.today())
     begin_time = models.DateTimeField(verbose_name="考试开始时间")
     end_time = models.DateTimeField(verbose_name="考试结束时间")
 
