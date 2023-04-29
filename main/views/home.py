@@ -16,6 +16,6 @@ def home(request):
     #     return redirect('/login/')
 
     date = datetime.date.today().isoweekday()
-    today_schedule = models.timetable.objects.filter(weekday=date)
+    today_schedule = models.Timetable.objects.filter(weekday=date)
     schedule = ScheduleForm()
     return render(request, "home.html", {'schedule': schedule})

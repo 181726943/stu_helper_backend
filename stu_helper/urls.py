@@ -15,18 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import RedirectView
 
 from main.views import login
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    # / -> 管理后台
+    path('', RedirectView.as_view(url='/admin/')),
 
-    # 登录
-    path('login/', login.login),
-    # 注销
-    path('logout/', login.logout),
-    # 图形验证码啊
-    path('image/auth_code/', login.image_code),
+    path('admin/', admin.site.urls),
 
     # 主页
     path('main/', include('main.urls')),

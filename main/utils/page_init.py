@@ -71,7 +71,7 @@ class Page_init(object):
             page_list.append(element)
 
         # 不分页
-        # grade_list = models.score.objects.filter(**data_dict)
+        # grade_list = models.Score.objects.filter(**data_dict)
 
         # 下一页
         if self.current_page < self.total_page:

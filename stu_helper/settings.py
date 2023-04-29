@@ -15,6 +15,7 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+STATIC_DIR = os.path.join(BASE_DIR, 'static')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -27,10 +28,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
+    'simpleui',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -71,7 +72,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'stu_helper.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
@@ -93,8 +93,7 @@ DATABASES = {
         "PORT": "3306",
     }
 }
-DEFAULT_AUTO_FIELD='django.db.models.AutoField'
-
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -114,9 +113,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
+
+AUTH_USER_MODEL = 'main.UserInfo'
 
 LANGUAGE_CODE = 'zh-hans'
 
@@ -127,6 +127,11 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+# 隐藏右侧SimpleUI广告链接和使用分析
+SIMPLEUI_HOME_INFO = False
+SIMPLEUI_ANALYSIS = False
+
 
 
 # Static files (CSS, JavaScript, Images)

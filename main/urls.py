@@ -11,7 +11,7 @@ urlpatterns = [
     # 成绩查询
     path('grades/', grades.grades, name='grades'),
     # 课表查询
-    path('timetable/', timetable.timetable, name='timetable'),
+    path('Timetable/', timetable.timetable, name='Timetable'),
     # 图书借阅情况
-    path('bookinfo/', bookinfo.bookinfo, name='bookinfo'),
+    path('Bookinfo/', bookinfo.bookinfo, name='Bookinfo'),
 ]

@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from main import models
 from django import forms
-# from main.models import score, bookinfo, timetable
+# from main.models import Score, Bookinfo, Timetable
 import datetime
 
 
@@ -14,7 +14,7 @@ class ScoreForm(forms.ModelForm):
     select_term = forms.ChoiceField(choices=term_choice)
 
     class Meta:
-        model = models.score
+        model = models.Score
         fields = "__all__"
 
         def __init__(self, *args, **kwargs):
@@ -29,13 +29,13 @@ class ScoreForm(forms.ModelForm):
 
 class BookForm(forms.ModelForm):
     class Meta:
-        model = models.bookinfo
+        model = models.Bookinfo
         fields = ["book_name", "read_type", "borrow_date", "return_date"]
 
 
 class ScheduleForm(forms.ModelForm):
     class Meta:
-        model = models.timetable
+        model = models.Timetable
         fields = "__all__"
 
         # widgets = {

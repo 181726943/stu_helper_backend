@@ -35,15 +35,15 @@ def grades(request):
     """
 
     # 这种方式获取到对象
-    grade_list = models.score.objects.filter(**data_dict)
+    grade_list = models.Score.objects.filter(**data_dict)
     # # 获取到字典
-    # grade_dict = models.score.objects.filter(**data_dict).values('cname', 'grade', 'gpa', 'credit')
+    # grade_dict = models.Score.objects.filter(**data_dict).values('cname', 'grade', 'gpa', 'credit')
     # # 对象列表[obj, obj, obj]
-    # grade_obj_list = models.score.objects.all()
+    # grade_obj_list = models.Score.objects.all()
     # # 字典列表 [{'id':1, 'xxx': "xx"}, {'id':1, 'xxx': "xx"}]
-    # grade_dict_list = models.score.objects.all().values('cname', 'grade', 'gpa', 'credit')
+    # grade_dict_list = models.Score.objects.all().values('cname', 'grade', 'gpa', 'credit')
     # # 元组列表 [('id', 1), ('xxx', "xx"),]
-    # grade_tuple_list = models.score.objects.all().values_list('cname', 'grade', 'gpa', 'credit')
+    # grade_tuple_list = models.Score.objects.all().values_list('cname', 'grade', 'gpa', 'credit')
 
     page_object = Page_init(request, grade_list)
     page_grade_list = page_object.page_queryset
@@ -52,8 +52,8 @@ def grades(request):
     # 选择学年和学期
     choose_Y_T = ScoreForm()
     # 根据数据库中学年设置学年选择列表
-    year_select = models.score.objects.values('year').distinct()
-    term_select = models.score.objects.values('term').distinct()
+    year_select = models.Score.objects.values('year').distinct()
+    term_select = models.Score.objects.values('term').distinct()
 
     context = {"grade_list": page_grade_list,  # 分页数据
                "choose_Y_T": choose_Y_T,  # 学年学期生成器
