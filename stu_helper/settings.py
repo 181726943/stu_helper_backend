@@ -11,11 +11,10 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+from pathlib import Path
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-STATIC_DIR = os.path.join(BASE_DIR, 'static')
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -26,7 +25,7 @@ SECRET_KEY = 'jvv#w@e5g3w3j-s9(j3uo2*za)o9l*1=ea@=%(fj0+4!5trt+^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*',]
 
 # Application definition
 
@@ -38,7 +37,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 跨域
+    "corsheaders",
+    # drf框架
+    'rest_framework',
+    'rest_framework.authtoken',
     'main',
+    # token认证
+    'dj_rest_auth',
+    # url过滤后端
+    'django_filters'
 ]
 
 MIDDLEWARE = [
@@ -46,10 +54,12 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'main.middleware.auth.AuthMiddleWare',
+    # 'main.middleware.auth.AuthMiddleWare',
 ]
 
 ROOT_URLCONF = 'stu_helper.urls'
@@ -57,7 +67,7 @@ ROOT_URLCONF = 'stu_helper.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -69,6 +79,24 @@ TEMPLATES = [
         },
     },
 ]
+
+# DRF全局配置
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        # 'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        # token认证必须设置这个参数，不然报错
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
+}
 
 WSGI_APPLICATION = 'stu_helper.wsgi.application'
 
@@ -128,6 +156,8 @@ USE_L10N = True
 
 USE_TZ = True
 
+# import rest_framework.authentication
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # 隐藏右侧SimpleUI广告链接和使用分析
 SIMPLEUI_HOME_INFO = False
 SIMPLEUI_ANALYSIS = False
@@ -138,3 +168,6 @@ SIMPLEUI_ANALYSIS = False
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# 跨域
+CORS_ALLOW_ALL_ORIGINS = True

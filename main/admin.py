@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from .models import UserInfo, Course, ClassRoom, Timetable, StuClass, ExamInfo, Score, Bookinfo
+from .models import UserInfo, Course, ClassRoom, Course_arrang, StuClass, ExamInfo, Score, Bookinfo
 
 # Register your models here.
 
@@ -45,7 +45,7 @@ class ClassRoomModelAdmin(admin.ModelAdmin):
     list_filter = ['building_name']
 
 
-@admin.register(Timetable)
+@admin.register(Course_arrang)
 class TimetableModelAdmin(admin.ModelAdmin):
     list_display = ['course_name', 'school_year', 'term', 'weekday', 'start_class', 'end_class', 'addr']
     list_filter = ['school_year', 'term']
@@ -55,23 +55,23 @@ class TimetableModelAdmin(admin.ModelAdmin):
 
 @admin.register(StuClass)
 class StuClassModelAdmin(admin.ModelAdmin):
-    list_display = ['id', 'student', 'timetable']
-    list_filter = ['timetable']
+    list_display = ['id', 'student', 'cou_arr']
+    list_filter = ['cou_arr']
     search_fields = ['student__user_name']
 
 
 @admin.register(ExamInfo)
 class ExamInfoModelAdmin(admin.ModelAdmin):
-    list_display = ['course_name', 'exam_stu', 'exam_date', 'begin_time', 'end_time', 'exam_addr']
-    list_filter = ['course_name', 'exam_stu']
+    list_display = ['course_name', 'cou_arr', 'exam_date', 'begin_time', 'end_time', 'exam_addr']
+    list_filter = ['course_name', 'cou_arr']
     search_fields = ['course_name']
 
 
 @admin.register(Score)
 class ScoreModelAdmin(admin.ModelAdmin):
-    list_display = ['cname', 'grade', 'credit', 'gpa']
-    list_filter = ['year', 'term']
-    search_fields = ['stu_name']
+    list_display = ['stu_name', 'grade', 'cou_arr', 'gpa']
+    list_filter = ['cou_arr']
+    search_fields = ['stu_name__user_name']
     list_per_page = 10
 
 

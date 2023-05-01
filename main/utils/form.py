@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from main import models
 from django import forms
-# from main.models import Score, Bookinfo, Timetable
+# from main.models import Score, Bookinfo, Course_arrang
 import datetime
 
 
@@ -35,7 +35,7 @@ class BookForm(forms.ModelForm):
 
 class ScheduleForm(forms.ModelForm):
     class Meta:
-        model = models.Timetable
+        model = models.Course_arrang
         fields = "__all__"
 
         # widgets = {

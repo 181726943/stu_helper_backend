@@ -1,8 +1,26 @@
-from django.shortcuts import render
+from django.contrib.auth.models import Group
+from rest_framework import viewsets
+from rest_framework import permissions
+
+from main.models import UserInfo
+from main.serializers import UserInfoSerializer, GroupSerializer
 
 
-def personalinfo(request):
-    """编辑/查看个人信息"""
-    if request.method == "GET":
-        pass
-    return render(request, 'personalinfo.html')
+class PersonalViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    query = UserInfo.objects.all()
+    serializer_class = UserInfoSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class GroupViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+

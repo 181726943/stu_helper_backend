@@ -74,7 +74,7 @@ class ClassRoom(models.Model):
         return f"{self.building_name}-{self.room_num}"
 
 
-class Timetable(models.Model):
+class Course_arrang(models.Model):
     class WeekChoice(models.IntegerChoices):
         Monday = 1, "星期一"
         Tuesday = 2, "星期二"
@@ -111,7 +111,7 @@ class Timetable(models.Model):
 class StuClass(models.Model):
     id = models.BigAutoField(primary_key=True, null=False)
     student = models.ForeignKey(UserInfo, on_delete=models.CASCADE, verbose_name="学生")
-    timetable = models.ForeignKey(Timetable, on_delete=models.CASCADE, verbose_name="教学班")
+    cou_arr = models.ForeignKey(Course_arrang, on_delete=models.CASCADE, verbose_name="课程安排")
 
     class Meta:
         db_table = "stuclass"
@@ -121,7 +121,7 @@ class StuClass(models.Model):
 class ExamInfo(models.Model):
     id = models.BigAutoField(primary_key=True, null=False)
     course_name = models.CharField(max_length=50, verbose_name="考试课程")
-    exam_stu = models.ForeignKey(StuClass, on_delete=models.CASCADE, verbose_name="考试班级")
+    cou_arr = models.ForeignKey(Course_arrang, on_delete=models.CASCADE, verbose_name="课程安排")
     exam_addr = models.ForeignKey(ClassRoom, on_delete=models.SET_NULL, null=True, verbose_name="考试地点")
     exam_date = models.DateField(verbose_name="考试日期", default=date.today)
     begin_time = models.DateTimeField(verbose_name="考试开始时间")
@@ -141,11 +141,8 @@ class Score(models.Model):
         (2, "第二学期"),
     )
     stu_name = models.ForeignKey(UserInfo, on_delete=models.CASCADE, verbose_name="学生姓名")
-    year = models.IntegerField(verbose_name="学年", default=2019)
-    term = models.SmallIntegerField(verbose_name="学期", choices=term_choice, default=1)
-    cname = models.CharField(verbose_name="课程名称", max_length=100, default='')
+    cou_arr = models.ForeignKey(Course_arrang, on_delete=models.CASCADE, verbose_name="课程安排")
     grade = models.DecimalField(verbose_name="成绩", max_digits=4, decimal_places=1, default=0.0)
-    credit = models.DecimalField(verbose_name="学分", max_digits=2, decimal_places=1, default=0.0)
     gpa = models.DecimalField(verbose_name="绩点", max_digits=2, decimal_places=1, default=0.0)
 
     class Meta:
@@ -155,12 +152,12 @@ class Score(models.Model):
 
 class Bookinfo(models.Model):
     book_choice = (
-        ("已读", "已读"),
-        ("在读", "在读"),
+        (1, "已读"),
+        (2, "在读"),
     )
     stu_name = models.ForeignKey(UserInfo, on_delete=models.CASCADE, verbose_name="读者姓名")
     book_name = models.CharField(verbose_name="图书名称", max_length=100, default='')
-    read_type = models.CharField(verbose_name="阅读情况", max_length=10, choices=book_choice, default='')
+    read_type = models.IntegerField(verbose_name="阅读情况", choices=book_choice)
     borrow_date = models.DateField(verbose_name="借阅时间", blank=False)
     return_date = models.DateField(verbose_name="归还时间", blank=True)
 
