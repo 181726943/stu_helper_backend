@@ -7,7 +7,7 @@ from main.serializers import StuClassSerializer
 
 
 class StuClassViewSet(viewsets.ModelViewSet):
-    query = StuClass.objects.all()
+    queryset = StuClass.objects.all()
     serializer_class = StuClassSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['cou_arr']
@@ -23,7 +23,7 @@ class StuClassViewSet(viewsets.ModelViewSet):
         # 只允许本用户添加属于自己课程
         if uid != user.id:
             raise ValidationError(detail="不允许代替选课!")
-        exist_objs = StuClass.objects.filter(student=user, educlass__id=tableid)
+        exist_objs = StuClass.objects.filter(student=user, cou_arr__id=tableid)
         if len(exist_objs) > 0:
             raise ValidationError(detail="你已经选过这门课了，不可以重复选课")
         return super().create(request, *args, **kwargs)

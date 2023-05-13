@@ -1,5 +1,7 @@
 from django.contrib.auth.models import Group
 from rest_framework import serializers
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.exceptions import AuthenticationFailed
 
 from .models import (
     UserInfo,
@@ -23,20 +25,31 @@ class UserInfoSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = UserInfo
         fields = ['url', 'identity', 'username', 'user_name', 'institute', 'grade', 'profession', 'phone', 'email']
+        read_only_fields = ['url', 'identity', 'username', 'user_name', 'institute', 'grade', 'profession']
+
+    def to_representation(self, instance):
+        origin = super().to_representation(instance)
+        extend = {
+            "grade": instance.grade,
+            "institute": instance.institute,
+            "profession": instance.profession,
+        }
+        origin.update(extend)
+        return origin
 
 
 class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = "__all__"
-        exclude = ['id',]
+        exclude = ['id']
 
 
 class ClassRoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = ClassRoom
         field = "__all__"
-        exclude = ['id',]
+        exclude = ['id']
 
 
 class TimetableSerializer(serializers.ModelSerializer):
@@ -49,7 +62,7 @@ class TimetableSerializer(serializers.ModelSerializer):
 class StuClassSerializer(serializers.ModelSerializer):
     class Meta:
         model = StuClass
-        field = "__all__"
+        fields = "__all__"
 
     def to_representation(self, instance):
         origin = super().to_representation(instance)

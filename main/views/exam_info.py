@@ -10,27 +10,36 @@ from main.serializers import ExamInfoSerializer
 
 
 class ExamInfoViewSet(viewsets.ModelViewSet):
-    query = ExamInfo.objects.all()
+    queryset = ExamInfo.objects.all()
     serializer_class = ExamInfoSerializer
-    td_bj = timedelta(hours=8)
 
     @action(detail=False)
     def myexam(self, request: Request, *args, **kwargs):
+
+        search_dict = {}  # 查询参数
+
         user = self.request.user
-        # exams = ExamInfo.objects.filter(timetable__stuclass__student=user)
-        exams = ExamInfo.objects.filter(cou_arr__stuclass__student=user)
-        now = datetime.utcnow() + self.td_bj
+        year = datetime.now().year  # 当前年份
+        month = datetime.now().month  # 当前月份
+        year = year if month >= 9 else year - 1  # 学年
+        term = 1 if month >= 9 else 2  # 学期
+        cname = self.request.query_params.get("cname")  # 课程名称
+
+        search_dict["cou_arr__stuclass__student"] = user
+        search_dict["cou_arr__school_year"] = year
+        search_dict["cou_arr__term"] = term
+        # 判断前端传过来的参数是否有值
+        if cname:
+            search_dict["cou_arr__course_name"] = cname
+
+        exams = ExamInfo.objects.filter(**search_dict)
+
         res = []
         for exam in exams:
-            # 硬编码了
-            begin = datetime.utcfromtimestamp(exam.begin_time.timestamp())
-            begin = begin + self.td_bj
-            if begin < now:
-                continue
             res.append({
                 "cname": exam.cou_arr.course_name.course_name,
-                "begin_time": begin.strftime("%Y-%m-%d %H:%M"),
-                "restday": (begin - now).days,
+                "exam_date": exam.exam_date.strftime("%Y-%M-%D"),
+                "exam_time": exam.begin_time.strftime("%H:%M") + '-' + exam.end_time.strftime("%H %M"),
                 "exam_addr": str(exam.classroom)
             })
         return Response(res)

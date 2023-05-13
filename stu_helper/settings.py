@@ -25,10 +25,11 @@ SECRET_KEY = 'jvv#w@e5g3w3j-s9(j3uo2*za)o9l*1=ea@=%(fj0+4!5trt+^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*',]
+ALLOWED_HOSTS = ['*', ]
 
 # Application definition
 
+SECURE_SSL_REDIRECT = False
 INSTALLED_APPS = [
     'simpleui',
     'django.contrib.admin',
@@ -46,7 +47,10 @@ INSTALLED_APPS = [
     # token认证
     'dj_rest_auth',
     # url过滤后端
-    'django_filters'
+    'django_filters',
+    # 配置https
+    'sslserver',
+
 ]
 
 MIDDLEWARE = [
@@ -95,7 +99,8 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
-    )
+    ),
+
 }
 
 WSGI_APPLICATION = 'stu_helper.wsgi.application'
@@ -162,11 +167,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SIMPLEUI_HOME_INFO = False
 SIMPLEUI_ANALYSIS = False
 
-
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'main', 'static')
 STATIC_URL = '/static/'
 
 # 跨域

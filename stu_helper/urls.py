@@ -16,10 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import RedirectView
-from rest_framework.documentation import include_docs_urls
+# from rest_framework.documentation import include_docs_urls
 
 
 urlpatterns = [
+    # 后端rest接口
+    path('main/', include('main.urls')),
+
     # / -> 管理后台
     path('', RedirectView.as_view(url='/admin/')),
     path('admin/', admin.site.urls),
@@ -27,9 +30,6 @@ urlpatterns = [
     # rest认证，
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
-    # 后端rest接口
-    path('api-main/', include('main.urls')),
-
     # DRF 接口文档
-    path('api/', include_docs_urls(title='DRF API 文档', description='校园助手API')),
+    # path('api/', include_docs_urls(title='DRF API 文档', description='校园助手API')),
 ]

@@ -105,7 +105,7 @@ class Course_arrang(models.Model):
         db_table = "timetable"
 
     def __str__(self):
-        return f"{self.course_name}-{self.start_week}-{self.end_week}"
+        return f"{self.course_name}"
 
 
 class StuClass(models.Model):
@@ -141,7 +141,7 @@ class Score(models.Model):
         (2, "第二学期"),
     )
     stu_name = models.ForeignKey(UserInfo, on_delete=models.CASCADE, verbose_name="学生姓名")
-    cou_arr = models.ForeignKey(Course_arrang, on_delete=models.CASCADE, verbose_name="课程安排")
+    cou_arr = models.ForeignKey(Course_arrang, on_delete=models.CASCADE, verbose_name="课程")
     grade = models.DecimalField(verbose_name="成绩", max_digits=4, decimal_places=1, default=0.0)
     gpa = models.DecimalField(verbose_name="绩点", max_digits=2, decimal_places=1, default=0.0)
 

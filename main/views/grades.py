@@ -11,19 +11,34 @@ from main.serializers import ScoreSerializer
 
 
 class GradeViewSet(viewsets.ModelViewSet):
-    query = Score.objects.all()
+    queryset = Score.objects.all()
     serializer_class = ScoreSerializer
 
     @action(detail=False)
     def my_score(self, request: Request, *args, **kwargs):
+
+        # 查询字典，设置查询条件
+        find_dict = {}
+
         user = self.request.user
-        myscore = Score.objects.filter(educlass__peopleclass__student=user)
+        # myscore = Score.objects.filter(educlass__peopleclass__student=user)
+        year = request.query_params.get('year', None)
+        term = request.query_params.get('term', None)
+
+        find_dict["stu_name"] = user
+        if year:
+            find_dict["cou_arr__school_year"] = year
+        if term:
+            find_dict['cou_arr__term'] = term
+
+        scores = Score.objects.filter(**find_dict)
         res = [{
             "cname": score.cou_arr.course_name.course_name,
             "credit": score.cou_arr.course_name.credit,
-            "gpa": 0 if score.grade < 60 else (score.grade - 50) / 10,
+            # "gpa": 0 if score.grade < 60 else (score.grade - 50) / 10,
+            "gpa": score.gpa,
             "scores": score.grade,
-        } for score in myscore]
+        } for score in scores]
         return Response(res)
 
 # def grades(request):

@@ -10,7 +10,7 @@ from main.serializers import TimetableSerializer
 
 
 class SelectViewSet(viewsets.ModelViewSet):
-    query = Course_arrang.objects.all()
+    queryset = Course_arrang.objects.all()
     serializer_class = TimetableSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['course_name', 'school_year', 'term']
@@ -40,7 +40,7 @@ class SelectViewSet(viewsets.ModelViewSet):
             res.append({
                 "table_id": timetable.pk,
                 "cname": timetable.course_name.course_name,
-                "credit": timetable.course.credit,
+                "credit": timetable.course_name.credit,
                 "location": str(timetable.addr),
                 "teacher": timetable.course_name.teacher.user_name,
                 "selected": selected,

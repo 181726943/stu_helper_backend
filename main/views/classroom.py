@@ -7,5 +7,5 @@ from main.permission import UserIdentity
 
 class ClassRoomViewSet(viewsets.ModelViewSet):
     permission_classes = (UserIdentity,)
-    query = ClassRoom.objects.all()
+    queryset = ClassRoom.objects.all()
     serializer_class = ClassRoomSerializer

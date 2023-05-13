@@ -9,7 +9,7 @@ from main.serializers import CourseSerializer
 
 
 class ScheduleViewSet(viewsets.ModelViewSet):
-    query = Course.objects.all()
+    queryset = Course.objects.all()
     serializer_class = CourseSerializer
 
     @action(detail=False)
@@ -20,30 +20,17 @@ class ScheduleViewSet(viewsets.ModelViewSet):
         for cls in my_class:
             m_table = cls.cou_arr
             m_course = m_table.course_name
-            zcd = [i for i in range(m_table.start_week, m_table.end_week + 1)]
+            weeks = [i for i in range(m_table.start_week, m_table.end_week + 1)]
             course = {
                 'cname': m_course.course_name,
-                'addr': str(m_table.classroom),
+                'addr': str(m_table.addr),
                 'teacher': m_course.teacher.user_name,
-                'zcdd': len(zcd),
-                'zcd': zcd,
-                "weekday": m_table.weekday,
-                'jcs': m_table.start_class,
+                'sumweek': len(weeks),   # 总周数
+                'weeks': weeks,  # 上课周数，数组
+                "weekday": m_table.weekday,  # 星期几上课
+                'start_class': m_table.start_class,  # 课程开始节数
                 'c_duration': m_table.end_class - m_table.start_class,  # 课程时长
                 'bg': 'blue'
             }
             res.append(course)
         return Response(res)
-
-    # 获取老师发布的课程
-    @action(detail=False)
-    def getcoursebyme(self, request: Request, *args, **kwargs):
-        user = self.request.user
-        # 学生无权限获取
-        if user.identity != UserInfo.IdentityChoice.TEACHER:
-            raise ValidationError(detail="非老师无法获取")
-        # res = []
-        objs = Course.objects.filter(teacher=user)
-        r = CourseSerializer(objs, many=True)
-        return Response(r.data)
-

@@ -9,7 +9,7 @@ from main.models import Bookinfo
 
 
 class BookInfoViewSet(viewsets.ModelViewSet):
-    query = Bookinfo.objects.all()
+    queryset = Bookinfo.objects.all()
     serializer_class = BookinfoSerializer
 
     @action(detail=False)
@@ -17,12 +17,10 @@ class BookInfoViewSet(viewsets.ModelViewSet):
         user = self.request.user
         begin_date = self.request.query_params['begin_date']
         end_date = self.request.query_params['end_date']
-        my_reads = Bookinfo.objects.filter(stu_name=user, borrow_date__gte=begin_date, borrow_date__lte=end_date).order_by("borrow_date")
+        my_reads = Bookinfo.objects.filter(stu_name=user, borrow_date__gte=begin_date, borrow_date__lte=end_date).\
+            order_by("borrow_date")
         res = []
         for read in my_reads:
-            bdate = read.borrow_date
-            uname = read.stu_name.user_name
-            bname = read.book_name
             res.append({
                 "bookname": read.book_name,
                 "borrow_date": read.borrow_date,
