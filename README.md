@@ -1,9 +1,7 @@
 # stu_helper
----
 毕设-校园助手微信小程序项目后端
 基于 ```python3.8``` 和 ```Django4.0```的校园助手微信小程序
 ## 主要功能
----
 部分功能前端实现
 - 成绩查询
 - 课表查询
@@ -15,9 +13,7 @@
 - 校园地图
 - 校园通讯
 ## 项目配置
----
 ### 配置python运行环境
----
 - 在windows终端中运行以下命令
 ```
 pip install -r requirements.txt
@@ -36,7 +32,6 @@ DATABASES = {
 }
 ```
 ### 创建数据库
----
 - 连接Mysql数据库，执行如下命令创建数据库
 ```shell
 CREATE DATABASE `stu_helper` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
@@ -47,7 +42,6 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 ### 创建超级用户
----
 - 终端下执行:
 ```shell
 python manage.py createsuperuser
