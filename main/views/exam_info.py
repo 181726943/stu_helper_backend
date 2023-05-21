@@ -38,8 +38,8 @@ class ExamInfoViewSet(viewsets.ModelViewSet):
         for exam in exams:
             res.append({
                 "cname": exam.cou_arr.course_name.course_name,
-                "exam_date": exam.exam_date.strftime("%Y-%M-%D"),
+                "exam_date": exam.exam_date,
                 "exam_time": exam.begin_time.strftime("%H:%M") + '-' + exam.end_time.strftime("%H %M"),
-                "exam_addr": str(exam.classroom)
+                "exam_addr": str(exam.exam_addr)
             })
         return Response(res)

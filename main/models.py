@@ -96,13 +96,12 @@ class Course_arrang(models.Model):
     end_class = models.SmallIntegerField(verbose_name="结束节数", default=14)
     school_year = models.IntegerField(verbose_name="学年")
     term = models.IntegerField(verbose_name="学期", choices=TermChoice.choices)
-    teach_name = models.CharField(verbose_name="教师姓名", max_length=50, default='')
     addr = models.ForeignKey(ClassRoom, max_length=20, on_delete=models.SET_NULL, blank=True, null=True,
                              verbose_name="上课地点")
 
     class Meta:
         verbose_name = verbose_name_plural = "课表"
-        db_table = "timetable"
+        db_table = "course_arrange"
 
     def __str__(self):
         return f"{self.course_name}"
@@ -120,7 +119,6 @@ class StuClass(models.Model):
 
 class ExamInfo(models.Model):
     id = models.BigAutoField(primary_key=True, null=False)
-    course_name = models.CharField(max_length=50, verbose_name="考试课程")
     cou_arr = models.ForeignKey(Course_arrang, on_delete=models.CASCADE, verbose_name="课程安排")
     exam_addr = models.ForeignKey(ClassRoom, on_delete=models.SET_NULL, null=True, verbose_name="考试地点")
     exam_date = models.DateField(verbose_name="考试日期", default=date.today)
@@ -132,7 +130,7 @@ class ExamInfo(models.Model):
         verbose_name = verbose_name_plural = "考试"
 
     def __str__(self):
-        return f"{self.course_name}-{str(self.exam_addr)}-{str(self.exam_date)}"
+        return f"{self.cou_arr.course_name}-{str(self.exam_addr)}-{str(self.exam_date)}"
 
 
 class Score(models.Model):

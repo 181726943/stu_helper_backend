@@ -1,9 +1,11 @@
+from dj_rest_auth.views import PasswordResetConfirmView, PasswordResetView
 from django.urls import path, include
 from rest_framework import routers
 from django.conf.urls.static import static
 
 from stu_helper import settings
-from .views import bookinfo, classroom, exam_info, grades, schedule, personalinfo, selectcourse, stu_class, get_csrftoken
+from .views import bookinfo, classroom, exam_info, grades, schedule, personalinfo, selectcourse, stu_class, \
+    get_csrftoken
 
 router = routers.SimpleRouter()
 router.register(r'bookinfo', bookinfo.BookInfoViewSet)
@@ -23,4 +25,7 @@ urlpatterns = [
     path('getCsrftoken/', get_csrftoken.getcsrftoken),
     # 登录接口
     path('auth/', include('dj_rest_auth.urls')),
+
+    path('password/reset/', PasswordResetView.as_view(), name='password_reset'),
+    path('password/reset/confirm/<uidb64>/<token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

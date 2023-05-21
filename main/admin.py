@@ -62,8 +62,8 @@ class StuClassModelAdmin(admin.ModelAdmin):
 
 @admin.register(ExamInfo)
 class ExamInfoModelAdmin(admin.ModelAdmin):
-    list_display = ['course_name', 'cou_arr', 'exam_date', 'begin_time', 'end_time', 'exam_addr']
-    list_filter = ['course_name', 'cou_arr']
+    list_display = ['cou_arr', 'exam_date', 'begin_time', 'end_time', 'exam_addr']
+    list_filter = ['cou_arr']
     search_fields = ['course_name']
 
 

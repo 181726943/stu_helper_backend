@@ -5,7 +5,7 @@ from rest_framework import viewsets
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from main.models import Course_arrang
+from main.models import Course_arrang, ClassRoom
 from main.serializers import TimetableSerializer
 
 
@@ -15,6 +15,7 @@ class SelectViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['course_name', 'school_year', 'term']
 
+    # 选课信息查询
     @action(detail=False)
     def courseselect(self, request: Request, *args, **kwargs):
         try:
@@ -46,13 +47,4 @@ class SelectViewSet(viewsets.ModelViewSet):
                 "selected": selected,
                 "pcs_id": stuid,
             })
-        # res= [{
-        #     "jxb_id":educlass.pk,
-        #     "kc":educlass.course.name,
-        #     "xf":educlass.course.credit,
-        #     "loc":str(educlass.classroom),
-        #     "teacher":educlass.course.create_teacher.name,
-        #     "selected":True if len(educlass.peopleclass_set.filter(student=self.request.user)) >0 else False
-        # }for educlass in objs]
-
         return Response(res)

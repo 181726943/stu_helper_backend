@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     # 跨域
     "corsheaders",
     # drf框架
@@ -45,12 +46,13 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'main',
     # token认证
+    'allauth',
+    'allauth.account',
     'dj_rest_auth',
     # url过滤后端
     'django_filters',
     # 配置https
     'sslserver',
-
 ]
 
 MIDDLEWARE = [
@@ -100,7 +102,10 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
+}
 
+AUTHENTICATION_BACKENDS = {
+    'allauth.account.auth_backends.AuthenticationBackend',
 }
 
 WSGI_APPLICATION = 'stu_helper.wsgi.application'
@@ -175,3 +180,15 @@ STATIC_URL = '/static/'
 
 # 跨域
 CORS_ALLOW_ALL_ORIGINS = True
+
+# 邮件验证
+
+SITE_ID = 1
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.qq.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = '1817246943@qq.com'
+EMAIL_HOST_PASSWORD = 'gjunkdqjsnvnbacj'
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = '1817246943@qq.com'
